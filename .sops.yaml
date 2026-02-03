@@ -1,0 +1,7 @@
+keys:
+  - &kohaku age1mltkkdvcgxqhmcwsjf9utshsy9jdn5u3sfhjku7jg3dltscv8ylsu6wsad
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *kohaku

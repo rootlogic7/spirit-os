@@ -6,6 +6,9 @@
       ./hardware-configuration.nix
       # Chaotic-Nyx Module (kommt aus flake.nix)
       # inputs.chaotic.nixosModules.default (Wird über flake.nix geladen)
+      
+      # Sops-Nix Modul für Secrets Management
+      inputs.sops-nix.nixosModules.sops
     ];
 
   # --- Bootloader & Kernel (CachyOS High Performance) ---
@@ -60,6 +63,20 @@
   fileSystems."/storage/media" = {
     device = "extra/media";
     fsType = "zfs";
+  };
+  
+  # --- Secrets Management (Sops) ---
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    
+    # Nutzt den Host-SSH-Key, um Secrets beim Booten zu entschlüsseln
+    # Das bedeutet: Nur dieser PC kann die Secrets lesen!
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    
+    # TEST: Wir aktivieren das 'test_secret' um zu prüfen, ob alles klappt.
+    # (Voraussetzung: Du hast 'test_secret' in der secrets.yaml angelegt)
+    secrets.test_secret = {};
   };
 
   # --- Networking ---
@@ -161,6 +178,9 @@
     wl-clipboard
     yazi
     mangohud 
+    
+    # Sops Tool für CLI
+    sops
   ];
 
   fonts.packages = with pkgs; [
