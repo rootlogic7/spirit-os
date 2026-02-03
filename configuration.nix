@@ -94,7 +94,12 @@
   # SSH
   services.openssh = {
     enable = true;
-    settings = { PermitRootLogin = "no"; PermitEmptyPasswords = "no"; };
+    settings = {
+      PermitRootLogin = "no";
+      PermitEmptyPasswords = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
   };
 
   # --- Locale & Time ---
@@ -176,6 +181,7 @@
     pciutils
     htop
     fastfetch
+    kitty
     ghostty
     wl-clipboard
     yazi
@@ -199,6 +205,9 @@
     description = "Haku"; 
     extraGroups = [ "networkmanager" "wheel" "video" "gamemode" ];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMD0q9gEM7isC6P98pLnNcEaoGP88toK3z+AqU9Gsx4 rootlogic7@proton.me"
+    ];
   };
 
   # Binary Cache Settings
