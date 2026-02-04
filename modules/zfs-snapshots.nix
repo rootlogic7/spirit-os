@@ -42,4 +42,9 @@
       "rpool/root" = { use_template = [ "default" ]; };
     };
   };
+  # NEU: Automatisches Scrubbing (Daten-Integritätsprüfung)
+  services.zfs.autoScrub = {
+    enable = true;
+    interval = "weekly";  # Prüft jede Woche auf Bit-Rot
+  };
 }

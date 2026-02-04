@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, mySshKey, ... }:
 
 {
   imports =
@@ -28,7 +28,7 @@
         enable = true;
         port = 22;
         # Der Public Key deines Laptops (dieselbe Zeile wie bei users.users.haku)
-        authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMD0q9gEM7isC6P98pLnNcEaoGP88toK3z+AqU9Gsx4 rootlogic7@proton.me" ];
+        authorizedKeys = [ mySshKey ];
         # Damit du keine "Host Key changed" Warnung bekommst, nutzen wir den Host-Key
         hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
       };
@@ -103,14 +103,14 @@
     
     # TEST: Wir aktivieren das 'test_secret' um zu prüfen, ob alles klappt.
     # (Voraussetzung: Du hast 'test_secret' in der secrets.yaml angelegt)
-    secrets.test_secret = {};
+    # secrets.test_secret = {};
   };
 
   # --- Networking ---
   networking.hostName = "kohaku";
   networking.networkmanager.enable = true;
   # NEU: Explizite DNS Server (Cloudflare & Google oder dein Router-IP)
-  networking.nameservers = [ "1.1.1.1" ];
+  networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
 
   # WICHTIG: Damit nach dem Booten das Gateway automatisch gefunden wird
   networking.interfaces.enp4s0.useDHCP = true;
@@ -244,9 +244,7 @@
     description = "Haku"; 
     extraGroups = [ "networkmanager" "wheel" "video" "gamemode" ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMD0q9gEM7isC6P98pLnNcEaoGP88toK3z+AqU9Gsx4 rootlogic7@proton.me"
-    ];
+    openssh.authorizedKeys.keys = [ mySshKey ];
   };
 
   # Binary Cache Settings
