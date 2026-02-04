@@ -48,7 +48,9 @@
     "quiet" "splash"
   ];
 
-  
+  # NEU: ZRAM (Komprimierter RAM-Swap für bessere Performance)
+  zramSwap.enable = true;
+
   # CachyOS Scheduler (scx) - "lavd" ist 2026 der Goldstandard für Gaming
   services.scx.enable = true;
   services.scx.scheduler = "scx_lavd";
@@ -109,6 +111,9 @@
   networking.networkmanager.enable = true;
   # NEU: Explizite DNS Server (Cloudflare & Google oder dein Router-IP)
   networking.nameservers = [ "1.1.1.1" ];
+
+  # WICHTIG: Damit nach dem Booten das Gateway automatisch gefunden wird
+  networking.interfaces.enp4s0.useDHCP = true;
   
   # Firewall Konfiguration
   networking.firewall = {

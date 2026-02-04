@@ -40,12 +40,6 @@
       # System & Home
       "rpool/home" = { use_template = [ "default" ]; };
       "rpool/root" = { use_template = [ "default" ]; };
-      
-      # Wichtige Backups (HDDs)
-      "safe/backup" = { use_template = [ "backup" ]; };
-      
-      # Massenspeicher (Media)
-      "extra/media" = { use_template = [ "media" ]; };
     };
   };
 }
