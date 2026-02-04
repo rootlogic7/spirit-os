@@ -209,19 +209,15 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
+    # Wichtig für System-Admin & Debugging
     git
     wget
     curl
-    pciutils
-    htop
-    fastfetch
-    kitty
-    ghostty
-    wl-clipboard
-    yazi
-    mangohud 
+    pciutils      # lspci (gut um Hardware zu checken)
+    htop        # Kann weg, wenn du btop im Home-Manager nutzt (oder hier lassen als Root-Backup)
+    fastfetch     # System-Info (kann hier bleiben oder ins Home)
     
-    # Sops Tool für CLI
+    # Sops Tool für Secrets (Muss hier bleiben für System-Rebuilds)
     sops
   ];
 

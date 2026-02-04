@@ -4,6 +4,26 @@
   # Home Manager braucht diese Infos
   home.username = "haku";
   home.homeDirectory = "/home/haku";
+  
+  # User-spezifische Pakete
+  home.packages = with pkgs; [
+    # --- GUI & Tools ---
+    ghostty         # Dein Haupt-Terminal
+    # kitty         # BACKUP: Falls Ghostty mal crasht (kannst du auskommentiert lassen)
+    yazi            # File Manager
+    wl-clipboard    # Clipboard für Wayland (wichtig für Neovim/Yazi)
+    
+    # --- Gaming ---
+    mangohud        # Overlay
+    # protonup-qt   # Optional: Um Proton-GE einfach zu installieren
+    
+    # --- CLI Power-Tools (passen zum "Power-User" Thema) ---
+    ripgrep         # "rg": Extrem schnelles Grep (nutzt Neovim oft intern)
+    fd              # "fd": Schnelleres 'find'
+    btop            # Viel schickerer/detaillierterer Task-Manager als htop
+    tldr            # Einfachere Man-Pages (z.B. "tldr tar")
+    fzf             # Fuzzy Finder (für History-Suche etc.)
+  ];
 
   # --- Hyprland Konfiguration ---
   wayland.windowManager.hyprland = {
@@ -12,8 +32,7 @@
     # Hier passiert die Magie: Wir schreiben die Config direkt in Nix
     settings = {
       # Monitor Setup (Auto)
-      monitor = "DP-1,3440x1440@100,0x0,auto";
-      monitor = "HDMI-A-1,1920x1080@100,3440x0,auto";
+      monitor = [ "DP-1,3440x1440@100,0x0,auto" "HDMI-A-1,1920x1080@100,3440x0,auto" ];
 
       cursor = {
         no_hardware_cursors = true;
