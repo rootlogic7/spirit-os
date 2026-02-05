@@ -268,57 +268,7 @@
     '';
   };
   # --- Quickshell Config ---
-  xdg.configFile."quickshell/shell.qml".text = ''
-    //@ using Quickshell 1.0
-    //@ using QtQuick 2.15
-    //@ using QtQuick.Layouts 1.15
-    //@ using Quickshell.Wayland 1.0
-    //@ using QtQml 2.15
-
-    ShellRoot {
-      // Die Statusbar
-      PanelWindow {
-        anchors {
-          top: true
-          left: true
-          right: true
-        }
-        height: 36 // Höhe der Leiste
-        color: "#1e1e2e" // Hintergrundfarbe (Catppuccin Mocha Base)
-
-        RowLayout {
-          anchors.fill: parent
-          anchors.leftMargin: 15
-          anchors.rightMargin: 15
-
-          // Links: System Name / Logo
-          Text {
-            text: "  KOHAKU"
-            color: "#89b4fa" // Blau
-            font.bold: true
-            font.pixelSize: 14
-          }
-
-          // Mitte: Spacer (drückt alles nach außen)
-          Item { Layout.fillWidth: true }
-
-          // Rechts: Uhrzeit
-          Text {
-            id: time
-            color: "#cdd6f4" // Weiß
-            font.pixelSize: 14
-
-            // Timer für Sekunden-Update
-            Timer {
-              interval: 1000; running: true; repeat: true
-              onTriggered: time.text = Qt.formatTime(new Date(), "hh:mm")
-            }
-            Component.onCompleted: time.text = Qt.formatTime(new Date(), "hh:mm")
-          }
-        }
-      }
-    }
-  '';
+  xdg.configFile."quickshell".source = ./modules/quickshell;
   # Dieser State Version Wert darf nicht geändert werden
   home.stateVersion = "24.11";
 }
