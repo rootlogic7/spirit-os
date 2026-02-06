@@ -14,17 +14,17 @@ Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 
 ├── hosts/                      # Maschinenspezifische Konfigurationen
 
-│       ├── kohaku/                 # Haupt-Workstation
+│             ├── kohaku/                 # Haupt-Workstation
 
-│       └── (chihiro)/              # (Zukünftiger Laptop)
+│             └── (chihiro)/              # (Zukünftiger Laptop)
 
 ├── modules/                    # Wiederverwendbare Module
 
-│       ├── core/                   # Basis-System (für ALLE Rechner)
+│             ├── core/                   # Basis-System (für ALLE Rechner)
 
-│       ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
+│             ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
 
-│       └── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
+│             └── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
 
 └── users/                      # Benutzer-Definitionen
 
