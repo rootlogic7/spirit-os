@@ -6,32 +6,19 @@ Willkommen im Monorepo für meine NixOS-Infrastruktur. Dieses Repository verwalt
 
 Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 
-
 ´´´
 .
-
 ├── flake.nix                   # Einstiegspunkt & Definition der Hosts
-
 ├── flake.lock                  # Gepinnte Versionen (Reproduzierbarkeit)
-
 ├── hosts/                      # Maschinenspezifische Konfigurationen
-
 │             ├── kohaku/                 # Haupt-Workstation
-
 │             └── (chihiro)/              # (Zukünftiger Laptop)
-
 ├── modules/                    # Wiederverwendbare Module
-
 │             ├── core/                   # Basis-System (für ALLE Rechner)
-
 │             ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
-
 │             └── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
-
 └── users/                      # Benutzer-Definitionen
-
-        ├── haku/                   # Mein User (lädt Spirit-Nix)
-    
+        ├── haku/                   # Mein User (lädt Spirit-Nix)    
         └── (bruder)/               # User für Bruder-PC
 ´´´
 
