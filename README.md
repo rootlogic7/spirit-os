@@ -26,9 +26,9 @@ o│ooooo└── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
 
 o└── users/                      # Benutzer-Definitionen
 
-o ooooo├── haku/                   # Mein User (lädt Spirit-Nix)
+ooooooo├── haku/                   # Mein User (lädt Spirit-Nix)
 
-o ooooo└── (user2)/               # User
+ooooooo└── (user2)/               # User
 
 ## 🚀 Workflow Cheatsheet
 
