@@ -28,8 +28,6 @@
       ];
 
       # --- Monitors (Fallback) ---
-      # Generisch: Versucht, jeden angeschlossenen Monitor automatisch zu konfigurieren.
-      # Spezifische Setups (wie dein DP-1) kommen in die User-Config.
       monitor = [
         ", preferred, auto, 1"
       ];
@@ -39,7 +37,13 @@
         kb_layout = "de";
         follow_mouse = 1;
         touchpad.natural_scroll = false;
-        # Sensitivity/Accel Profile entfernen wir hier -> User Config
+      };
+
+      # --- Cursor ---
+      cursor = {
+        inactive_timeout = 3;
+        hide_on_key_press = true;
+        # no_hardware_cursors = true; # Falls der Cursor flackert/unsichtbar ist, einkommentieren
       };
 
       # --- Design System ---
@@ -47,8 +51,10 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        # Mauve (#cba6f7) für aktive Fenster
+        "col.active_border" = "rgb(cba6f7)";
+        # Surface0 (#313244) für inaktive Fenster (dunkles Blau-Grau)
+        "col.inactive_border" = "rgb(313244)";
         layout = "dwindle";
         allow_tearing = true;
       };
