@@ -7,6 +7,7 @@ Willkommen im Monorepo für meine NixOS-Infrastruktur. Dieses Repository verwalt
 Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 
 ´´´
+
 .
 ├── flake.nix                   # Einstiegspunkt & Definition der Hosts
 ├── flake.lock                  # Gepinnte Versionen (Reproduzierbarkeit)
@@ -20,6 +21,7 @@ Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 └── users/                      # Benutzer-Definitionen
         ├── haku/                   # Mein User (lädt Spirit-Nix)    
         └── (bruder)/               # User für Bruder-PC
+        
 ´´´
 
 
