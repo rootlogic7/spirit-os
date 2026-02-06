@@ -3,73 +3,104 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 
+import "../theme"
+
 RowLayout {
     spacing: 15
 
-    // RAM
+    // CPU Anzeige
     RowLayout {
         spacing: 6
-        Text { text: ""; color: "#f9e2af"; font.pixelSize: 14 }
         Text { 
-            id: ramText
-            text: "Loading..." 
-            color: "#cdd6f4"
-            font.pixelSize: 12
+            text: "" 
+            color: Theme.green 
+            font: Theme.defaultFont
+        }
+        Text { 
+            id: cpuText
+            text: "..." 
+            color: Theme.subtext
+            font: Theme.defaultFont
         }
     }
 
-    // CPU
+    // RAM Anzeige
     RowLayout {
         spacing: 6
-        Text { text: ""; color: "#a6e3a1"; font.pixelSize: 14 }
         Text { 
-            id: cpuText
-            text: "Loading..." 
-            color: "#cdd6f4"
-            font.pixelSize: 12
+            text: "" 
+            color: Theme.yellow 
+            font: Theme.defaultFont
+        }
+        Text { 
+            id: ramText
+            text: "..." 
+            color: Theme.subtext
+            font: Theme.defaultFont
         }
     }
-    
+
     // --- LOGIK ---
-    
-    // RAM: Wir lesen /proc/meminfo direkt via "cat" (sicherer als free parsing)
+
+    // 1. RAM Logic (/proc/meminfo)
     Timer {
-        interval: 3000; running: true; repeat: true; triggeredOnStart: true
-        onTriggered: ramProcess.running = true
+        interval: 3000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: ramProc.running = true
     }
-    
+
     Process {
-        id: ramProcess
-        // free -h ist am einfachsten lesbar für Menschen
-        command: ["free", "-h"] 
-        stdout: function(data) { 
-            // Parsing: Zeile "Mem:", 3. Spalte (Used) / 2. Spalte (Total)
-            const lines = data.split("\n");
-            if (lines.length > 1) {
-                const parts = lines[1].match(/\S+/g); // Split by whitespace
-                if (parts && parts.length >= 3) {
-                    ramText.text = parts[2] + " / " + parts[1];
+        id: ramProc
+        command: ["cat", "/proc/meminfo"]
+        
+        // FIX: StdioCollector sammelt den Output für uns
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const output = text // 'text' ist eine Eigenschaft des Collectors
+                
+                const lines = output.split("\n");
+                let total = 0;
+                let available = 0;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes("MemTotal:")) 
+                        total = parseInt(lines[i].match(/\d+/)[0]);
+                    if (lines[i].includes("MemAvailable:")) 
+                        available = parseInt(lines[i].match(/\d+/)[0]);
+                }
+
+                if (total > 0) {
+                    const used = (total - available) / 1024 / 1024;
+                    const totalGb = total / 1024 / 1024;
+                    ramText.text = used.toFixed(1) + " / " + totalGb.toFixed(1) + " GiB";
                 }
             }
         }
     }
 
-    // CPU: top kann zickig sein im Batch-Mode. Wir nutzen /proc/loadavg als Fallback oder vmstat
+    // 2. CPU Logic (/proc/loadavg)
     Timer {
-        interval: 3000; running: true; repeat: true; triggeredOnStart: true
-        onTriggered: cpuProcess.running = true
+        interval: 3000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: cpuProc.running = true
     }
+
     Process {
-        id: cpuProcess
-        // top im batch mode (-b), 1 iteration (-n1), grep cpu zeile
-        command: ["sh", "-c", "top -b -n1 | grep 'Cpu(s)'"]
-        stdout: function(data) { 
-             // Format: %Cpu(s): 2.5 us, 1.0 sy ... -> Wir wollen user + sys oder idle invertieren
-             // Einfacher: Wir nehmen den ersten wert (us)
-             const parts = data.match(/(\d+\.\d+)/); 
-             if (parts) {
-                 cpuText.text = parts[0] + "%";
-             }
+        id: cpuProc
+        command: ["cat", "/proc/loadavg"]
+        
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const output = text
+                if (output) {
+                    const parts = output.split(" ");
+                    cpuText.text = "Load: " + parts[0];
+                }
+            }
         }
     }
 }

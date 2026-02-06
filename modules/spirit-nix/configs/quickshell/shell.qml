@@ -1,36 +1,42 @@
 import QtQuick
-import QtQml // WICHTIG: Für Instantiator
 import Quickshell
 import Quickshell.Wayland
 
+import "./components"
+import "./theme"
+
 ShellRoot {
     id: root
-    
+
+    // Globale Variablen für Popups
     property bool isLauncherOpen: false
+    property var activePopup: null // Für Audio/Netzwerk Popups später
 
-    Component.onCompleted: {
-        console.log("Quickshell started.")
-        console.log("Screens found: " + Quickshell.screens.length)
-    }
+    // Singleton für Theme laden (optional, falls wir es so lösen wollen)
+    // Theme {} 
 
-    // FIX: Instantiator statt Repeater nutzen!
+    // Wir suchen explizit nach dem Screen, den wir wollen.
+    // Entweder der erste (Index 0) oder der "Primary".
+    // Quickshell aktualisiert dieses Model automatisch, wenn Hyprland fertig ist.
+    
     Instantiator {
         model: Quickshell.screens
         
-        delegate: Bar {
-            shellRoot: root
+        delegate: Loader {
+            // Lade die Bar NUR, wenn es der primäre Monitor ist
+            // Oder du kannst hartcodieren: modelData.name === "DP-1"
+            active: modelData.primary || modelData.name === "DP-1"
             
-            // Wir weisen den Screen direkt zu. 
-            // PanelWindow hat eine built-in 'screen' Eigenschaft.
-            screen: modelData 
+            sourceComponent: Bar {
+              screen: modelData
+              shellRoot: root
+            }
             
-            isPrimary: index === 0 
+            onLoaded: console.log("Bar loaded on primary screen: " + modelData.name)
         }
-        
-        // Debug: Bestätigung, wenn eine Bar erstellt wurde
-        onObjectAdded: (index, object) => console.log("Bar created for screen index: " + index)
     }
 
+    // Launcher (Global, öffnet sich auf dem aktiven Screen)
     Launcher {
         visible: root.isLauncherOpen
     }

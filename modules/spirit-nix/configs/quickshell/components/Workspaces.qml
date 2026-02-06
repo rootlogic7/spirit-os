@@ -3,48 +3,42 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 
+import "../theme"
+
 RowLayout {
-    spacing: 6
+    spacing: 8
 
+    // FIX: Wir nutzen ein festes Model für Workspaces 1-5
     Repeater {
-        model: Hyprland.workspaces
+        model: [1, 2, 3, 4, 5]
         
-        delegate: Item {
-            // Logik: Nur anzeigen, wenn ID <= 5 (oder Index < 5)
-            // Wir nutzen hier index, da Workspace-IDs Lücken haben können.
-            visible: index < 5
-            width: visible ? 24 : 0
-            height: visible ? 24 : 0
+        delegate: Rectangle {
+            width: 32
+            height: 32
+            radius: 8
+            
+            // Logik: Ist dieser Workspace gerade aktiv?
+            property bool isActive: Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.id === modelData
 
-            Rectangle {
+            // Farbe: Akzent wenn aktiv, Surface0 wenn inaktiv
+            color: isActive ? Theme.accent : Theme.surface0
+            
+            Behavior on color { ColorAnimation { duration: 200 } }
+
+            Text {
+                anchors.centerIn: parent
+                text: modelData
+                // Textfarbe: Base (dunkel) wenn aktiv, Text (hell) wenn inaktiv
+                color: isActive ? Theme.base : Theme.text
+                font: Theme.defaultFont
+            }
+
+            MouseArea {
                 anchors.fill: parent
-                radius: 6
-                color: modelData.active ? "#89b4fa" : "#313244"
-                
-                Behavior on color { ColorAnimation { duration: 150 } }
-
-                Text {
-                    anchors.centerIn: parent
-                    text: modelData.id
-                    color: modelData.active ? "#1e1e2e" : "#cdd6f4"
-                    font.bold: true
-                    font.pixelSize: 12
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: modelData.focused = true
-                }
+                cursorShape: Qt.PointingHandCursor
+                // Hyprland Befehl zum Wechseln senden
+                onClicked: Hyprland.dispatch("workspace", modelData)
             }
         }
-    }
-    
-    // Kleiner Indikator, falls mehr als 5 Workspaces da sind
-    Text {
-        visible: Hyprland.workspaces.count > 5
-        text: "+"
-        color: "#6c7086"
-        font.pixelSize: 12
     }
 }
