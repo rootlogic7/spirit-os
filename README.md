@@ -8,19 +8,33 @@ Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 
 ´´´
 a
+
 a.
+
 a├── flake.nix                   # Einstiegspunkt & Definition der Hosts
+
 a├── flake.lock                  # Gepinnte Versionen (Reproduzierbarkeit)
+
 a├── hosts/                      # Maschinenspezifische Konfigurationen
+
 a│             ├── kohaku/                 # Haupt-Workstation
+
 a│             └── (chihiro)/              # (Zukünftiger Laptop)
+
 a├── modules/                    # Wiederverwendbare Module
+
 a│             ├── core/                   # Basis-System (für ALLE Rechner)
+
 a│             ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
+
 a│             └── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
+
 a└── users/                      # Benutzer-Definitionen
-a        ├── haku/                   # Mein User (lädt Spirit-Nix)    
+
+a        ├── haku/                   # Mein User (lädt Spirit-Nix)
+
 a        └── (bruder)/               # User für Bruder-PC
+
 a        
 ´´´
 
