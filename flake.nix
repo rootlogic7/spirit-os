@@ -39,34 +39,22 @@
       user = "haku";
       sshKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMD0q9gEM7isC6P98pLnNcEaoGP88toK3z+AqU9Gsx4 rootlogic7@proton.me";
     };
-
-    # Helper-Funktion für System-Erstellung
-    mkSystem = { hostname, user }: nixpkgs.lib.nixosSystem {
+    # Helper-Funktion für System-Erstellung (jetzt mit optionalem homeConfig Argument)
+    mkSystem = { hostname, user, homeConfig ? ./users/${user}/home.nix }: nixpkgs.lib.nixosSystem {
       inherit system;
-      # Übergibt inputs und vars an alle Module
       specialArgs = { inherit inputs vars; };
       modules = [
-        # 1. Host-Spezifische Konfiguration
         ./hosts/${hostname}/default.nix
-        
-        # 2. Basis-System (immer dabei)
         ./modules/core/default.nix
-
-        # 3. Kernel Optimierungen (Chaotic Nyx)
         inputs.chaotic.nixosModules.default
-        
-        # 4. Secrets Management
         inputs.sops-nix.nixosModules.sops
-
-        # 5. Home Manager Integration
         inputs.home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
           home-manager.extraSpecialArgs = { inherit inputs vars; };
-          
-          # Lädt die Home-Config des angegebenen Users
-          home-manager.users.${user} = import ./users/${user}/home.nix;
+          # Lädt die übergebene Home-Config (oder den Default)
+          home-manager.users.${user} = import homeConfig;
         }
       ];
     };
@@ -76,6 +64,11 @@
       kohaku = mkSystem { 
         hostname = "kohaku"; 
         user = "haku"; 
+      };
+      chihiro = mkSystem {
+        hostname = "chihiro";
+        user = "haku";
+        homeConfig = ./users/haku/home-chihiro.nix;
       };
     };
   };
