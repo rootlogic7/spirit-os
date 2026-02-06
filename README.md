@@ -1,8 +1,8 @@
-👻 Spirit-OS (Haku's Fleet)
+# 👻 Spirit-OS
 
 Willkommen im Monorepo für meine NixOS-Infrastruktur. Dieses Repository verwaltet meine gesamte PC-Flotte und enthält meine eigene, modulare Linux-Distribution "Spirit-Nix".
 
-📂 Struktur
+## 📂 Struktur
 
 Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
 
@@ -21,12 +21,12 @@ Die Konfiguration folgt dem Nix Flakes Ansatz und ist modular aufgebaut:
     └── (bruder)/               # User für Bruder-PC
 
 
-🚀 Workflow Cheatsheet
+## 🚀 Workflow Cheatsheet
 
 Da Flakes nur Dateien sehen, die Git bekannt sind, ist der Workflow strikt:
 
-1. Änderungen anwenden (Der "Daily Loop")
-
+### 1. Änderungen anwenden (Der "Daily Loop")
+´´´
 # 1. Änderungen stagen (WICHTIG!)
 git add .
 
@@ -35,10 +35,10 @@ sudo nixos-rebuild dry-activate --flake .#kohaku
 
 # 3. Anwenden (Switch)
 sudo nixos-rebuild switch --flake .#kohaku
+´´´
 
-
-2. System-Updates (Pakete aktualisieren)
-
+### 2. System-Updates (Pakete aktualisieren)
+´´
 # 1. flake.lock aktualisieren (lädt neuste Versionen von nixpkgs/chaotic)
 nix flake update
 
@@ -47,57 +47,57 @@ sudo nixos-rebuild switch --flake .#kohaku
 
 # 3. Lockfile committen
 git commit -m "chore: update system packages" flake.lock
+´´
 
-
-3. Aufräumen (Garbage Collection)
-
+### 3. Aufräumen (Garbage Collection)
+´´
 # Alte Generationen löschen und Store optimieren
 nix-collect-garbage -d
+´´
 
+## 🛠 Verwaltung & Szenarien
 
-🛠 Verwaltung & Szenarien
+### Einen neuen Host hinzufügen (z.B. "chihiro")
 
-Einen neuen Host hinzufügen (z.B. "chihiro")
+1. Verzeichnis hosts/chihiro erstellen.
 
-Verzeichnis hosts/chihiro erstellen.
+2. hosts/kohaku/default.nix dorthin kopieren und anpassen (Bootloader, Hostname, Imports).
 
-hosts/kohaku/default.nix dorthin kopieren und anpassen (Bootloader, Hostname, Imports).
+3. hardware-configuration.nix vom Zielgerät generieren und in den Ordner legen.
 
-hardware-configuration.nix vom Zielgerät generieren und in den Ordner legen.
-
-In flake.nix einen neuen Eintrag unter nixosConfigurations hinzufügen:
-
+4. In flake.nix einen neuen Eintrag unter nixosConfigurations hinzufügen:
+´´
 chihiro = mkSystem { hostname = "chihiro"; user = "haku"; };
+´´
 
+5. Installieren: nixos-rebuild switch --flake .#chihiro
 
-Installieren: nixos-rebuild switch --flake .#chihiro
+### Einen neuen User hinzufügen (z.B. "bruder")
 
-Einen neuen User hinzufügen (z.B. "bruder")
+1. modules/users/bruder.nix erstellen (System-User Definition).
 
-modules/users/bruder.nix erstellen (System-User Definition).
+2. users/bruder/home.nix erstellen (Home-Manager Config).
 
-users/bruder/home.nix erstellen (Home-Manager Config).
-
-In users/bruder/home.nix die Distro importieren:
-
+3. In users/bruder/home.nix die Distro importieren:
+´´´
 imports = [ ../../modules/spirit-nix/default.nix ];
+´´
 
+### Secrets verwalten (Sops)
 
-Secrets verwalten (Sops)
+- Passwörter liegen verschlüsselt in secrets/secrets.yaml.
 
-Passwörter liegen verschlüsselt in secrets/secrets.yaml.
+- Bearbeiten: sops secrets/secrets.yaml
 
-Bearbeiten: sops secrets/secrets.yaml
+    1. Neuen Host berechtigen:
 
-Neuen Host berechtigen:
-
-SSH Public Key des Hosts in .sops.yaml hinzufügen.
+    2. SSH Public Key des Hosts in .sops.yaml hinzufügen.
 
 Keys neu verschlüsseln: sops updatekeys secrets/secrets.yaml
 
-🎨 Spirit-Nix Distribution
+## 🎨 Spirit-Nix Distribution
 
-Meine persönliche "Distro" lebt in modules/spirit-nix. Sie beinhaltet:
+### Meine persönliche "Distro" lebt in modules/spirit-nix. Sie beinhaltet:
 
 - Desktop: Hyprland (High Performance Config)
 
