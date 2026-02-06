@@ -20,15 +20,15 @@ o├── modules/                    # Wiederverwendbare Module
 
 o│ooooo├── core/                   # Basis-System (für ALLE Rechner)
 
-o│             ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
+o│ooooo├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
 
-o│             └── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
+o│ooooo└── hardware/               # Hardware-Module (Nvidia, ZFS etc.)
 
 o└── users/                      # Benutzer-Definitionen
 
-o        ├── haku/                   # Mein User (lädt Spirit-Nix)
+o ooooo├── haku/                   # Mein User (lädt Spirit-Nix)
 
-o        └── (user2)/               # User
+o ooooo└── (user2)/               # User
 
 ## 🚀 Workflow Cheatsheet
 
