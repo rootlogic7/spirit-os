@@ -35,6 +35,14 @@
     sops
   ];
 
+  # --- Editor ---
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
+
   # --- Locale & Zeit ---
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";

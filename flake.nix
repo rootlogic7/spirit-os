@@ -1,12 +1,15 @@
 {
-  description = "Kohaku NixOS - Modular Configuration";
+  description = "Spirit-OS (NixOS) - Modular Configuration";
 
   inputs = {
     # --- Core ---
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     
     # --- Kernel & Performance ---
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # --- User Management ---
     home-manager = {
@@ -21,7 +24,10 @@
     };
 
     # --- Custom Modules ---
-    quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
