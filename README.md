@@ -12,13 +12,13 @@ o├── flake.lock                  # Gepinnte Versionen (Reproduzierbarkeit)
 
 o├── hosts/                      # Maschinenspezifische Konfigurationen
 
-o│             ├── kohaku/                 # Haupt-Workstation
+o│ooooo├── kohaku/                 # Haupt-Workstation
 
-o│             └── (chihiro)/              # (Zukünftiger Laptop)
+o│ooooo└── (chihiro)/              # (Zukünftiger Laptop)
 
 o├── modules/                    # Wiederverwendbare Module
 
-o│             ├── core/                   # Basis-System (für ALLE Rechner)
+o│ooooo├── core/                   # Basis-System (für ALLE Rechner)
 
 o│             ├── spirit-nix/             # 🌟 Meine Custom Distro (Theme, Hyprland, Shell)
 
@@ -29,8 +29,6 @@ o└── users/                      # Benutzer-Definitionen
 o        ├── haku/                   # Mein User (lädt Spirit-Nix)
 
 o        └── (user2)/               # User
-
-o
 
 ## 🚀 Workflow Cheatsheet
 
