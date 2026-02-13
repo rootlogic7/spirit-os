@@ -54,6 +54,8 @@
   fileSystems."/storage/backup" = { device = "safe/backup"; fsType = "zfs"; };
   fileSystems."/storage/media"  = { device = "extra/media"; fsType = "zfs"; };
 
+  fileSystems."/persist".neededForBoot = true;
+
   boot.initrd.luks.devices = {
     "crypt_safe1" = { device = "/dev/disk/by-id/ata-TOSHIBA_DT01ACA200_94JKP2VHS-part1"; preLVM = true; };
     "crypt_safe2" = { device = "/dev/disk/by-id/ata-WDC_WD40EZRZ-22GXCB0_WD-WCC7K5LD8Y9V-part1"; preLVM = true; };
@@ -96,7 +98,7 @@
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
     secrets."haku-password".neededForUsers = true;
   };
 
