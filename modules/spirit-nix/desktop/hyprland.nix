@@ -126,6 +126,7 @@
         "$mod, M, exit,"
         "$mod, E, exec, $terminal -e yazi"
         "$mod, SPACE, exec, quickshell ipc call spirit toggle"
+        "$mod, I, exec, quickshell ipc call spirit toggleAudio"
         "$mod, V, togglefloating,"
         "$mod, F, fullscreen,"
         "$mod, P, pseudo,"

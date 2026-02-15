@@ -48,7 +48,7 @@ PanelWindow {
             property var filteredApps: {
                 var query = searchBox.text.toLowerCase();
                 if (query === "") return allApps;
-                return allApps.filter(app => app.name.toLowerCase().includes(query));
+                return allApps.filter(app => app && app.name && app.name.toLowerCase().includes(query));
             }
             
             TextField {
@@ -73,28 +73,26 @@ PanelWindow {
                         if (launcherWindow.visible) {
                             searchBox.forceActiveFocus();
                             searchBox.text = ""; 
-                            appList.currentIndex = 0; // Liste auf Anfang zurücksetzen
+                            appList.currentIndex = 0;
                         }
                     }
                 }
                 
-                // Setzt die Markierung bei jedem Tippen wieder auf das oberste Element
                 onTextChanged: appList.currentIndex = 0
 
-                // --- NEU: PFEILTASTEN STEUERUNG ---
-                Keys.onUpPressed: {
+                Keys.onUpPressed: (event) => {
                     appList.decrementCurrentIndex();
-                    event.accepted = true; // Verhindert, dass der Text-Cursor springt
+                    event.accepted = true;
                 }
-                Keys.onDownPressed: {
+                Keys.onDownPressed: (event) => {
                     appList.incrementCurrentIndex();
                     event.accepted = true;
                 }
                 
-                // Führt nun das AKTUELL MARKIERTE Programm aus, nicht zwingend das erste
                 onAccepted: {
                     if (layoutRoot.filteredApps.length > 0 && appList.currentIndex >= 0) {
-                        layoutRoot.filteredApps[appList.currentIndex].execute();
+                        var app = layoutRoot.filteredApps[appList.currentIndex];
+                        if (app) app.execute();
                         if (shellRoot) shellRoot.isLauncherOpen = false;
                     }
                 }
@@ -108,16 +106,19 @@ PanelWindow {
                 spacing: 5
                 
                 model: layoutRoot.filteredApps
-                currentIndex: 0 // Speichert, welches Element gerade markiert ist
+                currentIndex: 0
                 
                 delegate: Rectangle {
-                    width: ListView.view.width
+                    // FIX 1: Direkte ID nutzen statt ListView.view.width
+                    width: appList.width 
                     height: 50
                     radius: 8
                     
-                    // --- NEU: DYNAMISCHE HERVORHEBUNG ---
-                    // Überprüft, ob dieses Element per Tastatur markiert ist oder die Maus darüber schwebt
-                    property bool isSelected: ListView.view.currentIndex === index
+                    property bool isValid: modelData !== null && modelData !== undefined
+                    visible: isValid
+                    
+                    // FIX 2: Die 100% sichere, eingebaute Methode nutzen
+                    property bool isSelected: ListView.isCurrentItem 
                     property bool isHovered: mouseArea.containsMouse
                     
                     color: (isSelected || isHovered) ? Theme.surface1 : "transparent"
@@ -126,7 +127,7 @@ PanelWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.leftMargin: 15
-                        text: modelData.name 
+                        text: parent.isValid ? modelData.name : ""
                         color: (isSelected || isHovered) ? Theme.accent : Theme.text
                         font.family: Theme.defaultFont.family
                         font.pixelSize: 16
@@ -136,14 +137,17 @@ PanelWindow {
                         id: mouseArea
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        hoverEnabled: true // Wichtig, damit isHovered funktioniert, ohne dass man klickt!
+                        hoverEnabled: true
                         
-                        // Wenn die Maus drüberfährt, wird das Element automatisch zur aktiven Markierung (für "Enter")
-                        onEntered: ListView.view.currentIndex = index
+                        onEntered: {
+                            if (parent.isValid) appList.currentIndex = index
+                        }
                         
                         onClicked: {
-                            modelData.execute();
-                            if (shellRoot) shellRoot.isLauncherOpen = false;
+                            if (parent.isValid) {
+                                modelData.execute();
+                                if (shellRoot) shellRoot.isLauncherOpen = false;
+                            }
                         }
                     }
                 }
