@@ -1,6 +1,6 @@
 keys:
   - &kohaku age1mltkkdvcgxqhmcwsjf9utshsy9jdn5u3sfhjku7jg3dltscv8ylsu6wsad
-  - &shikigami ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBjyXdhy/X4Rxx2QcvQJzNJzEyy0TJZFuJZgbcNmqMXw
+  - &shikigami age1zf98vlevdla3muqcjklmtafa64qrgj6xaewtefrcf00vvyq3dvcqf6sneh
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
