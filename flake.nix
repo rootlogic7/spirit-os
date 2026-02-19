@@ -1,5 +1,5 @@
 {
-  description = "Spirit-OS (NixOS) - Kohaku Only";
+  description = "Spirit-OS (NixOS)";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -50,6 +50,16 @@
           home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.users.haku = import ./users/haku/home.nix;
         }
+      ];
+    };
+    nixosConfigurations.shikigami = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        ./hosts/shikigami/default.nix
+        # Nur das absolute Minimum an Modulen!
+        inputs.disko.nixosModules.disko
+        inputs.impermanence.nixosModules.impermanence
       ];
     };
   };
