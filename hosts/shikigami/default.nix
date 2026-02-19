@@ -4,11 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ../../modules/users/haku.nix
   ];
 
   networking.hostName = "shikigami";
-  # ZFS benötigt zwingend eine Host-ID. Generiere am besten eine eigene mit `head -c 8 /etc/machine-id`
-  # oder nimm hier temporär eine zufällige:
   networking.hostId = "1a2b3c4d"; 
 
   # --- Bootloader & Kernel ---
@@ -39,12 +38,31 @@
   # Persistenz (nur das absolut Nötigste für den Boot)
   fileSystems."/persist".neededForBoot = true;
   
+  # --- IMPERMANENCE (Wichtig für den Laptop!) ---
+  environment.persistence."/persist" = {
+    hideMounts = true;
+    directories = [
+      "/var/log"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/etc/NetworkManager/system-connections" # Behält WLAN Passwörter
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
+  };
+
+  # --- SECRETS (SOPS) ---
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+    secrets."haku-password".neededForUsers = true;
+  };
+
   # Basis-Netzwerk
   networking.networkmanager.enable = true;
-
-  # Root-Passwort temporär setzen (da wir noch keine User/SOPS haben)
-  # WICHTIG: Ändere das Passwort nach dem ersten Login!
-  users.users.root.initialPassword = "root";
-
   system.stateVersion = "24.11"; 
 }

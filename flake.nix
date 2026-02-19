@@ -55,6 +55,15 @@
         # Nur das absolute Minimum an Modulen!
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
+        inputs.sops-nix.nixosModules.sops
+        inputs.home-manager.nixosModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
+          home-manager.extraSpecialArgs = { inherit inputs; };
+          # Wir nutzen vorerst dieselbe home.nix wie auf kohaku!
+          home-manager.users.haku = import ./users/haku/home.nix;
+        }
       ];
     };
   };
