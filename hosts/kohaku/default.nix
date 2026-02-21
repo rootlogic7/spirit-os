@@ -55,6 +55,7 @@
   fileSystems."/storage/media"  = { device = "extra/media"; fsType = "zfs"; };
 
   fileSystems."/persist".neededForBoot = true;
+  fileSystems."/home".neededForBoot = true;
 
   boot.initrd.luks.devices = {
     "crypt_safe1" = { device = "/dev/disk/by-id/ata-TOSHIBA_DT01ACA200_94JKP2VHS-part1"; preLVM = true; };
@@ -66,7 +67,15 @@
 
   # 1. ZFS Rollback bei jedem Boot (Setzt Root auf den leeren Snapshot zurück)
   boot.initrd.postDeviceCommands = lib.mkAfter ''
+    # 1. Warte, bis alle Geräte (nach der LUKS-Passworteingabe) vollständig geladen sind
+    udevadm settle
+
+    # 2. Zwinge das System, den Pool jetzt zu importieren (falls es das nicht schon getan hat)
+    zpool import -N rpool || true
+
+    # 3. Jetzt, wo der Pool garantiert da ist: ZFS Rollback!
     zfs rollback -r rpool/root@blank
+    zfs rollback -r rpool/home@blank
   '';
 
   # 2. Impermanence Konfiguration (Das hier bleibt über Neustarts hinweg erhalten)
@@ -84,6 +93,15 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
+    users.haku = {
+      directories = [
+        "spirit-os"
+	".ssh"
+      ];
+      files = [
+        ".zsh_history"
+      ];
+    };
   };
 
   # =======================================
