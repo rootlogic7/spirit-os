@@ -65,6 +65,7 @@
             type = "zfs_fs";
             mountpoint = "/home";
             options.mountpoint = "legacy";
+            postCreateHook = "zfs snapshot rpool/home@blank";
           };
         };
       };

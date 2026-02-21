@@ -32,7 +32,10 @@
   # === ERASE YOUR DARLINGS (EYD) MAGIE ===
   # ZFS Rollback bei jedem Boot
   boot.initrd.postDeviceCommands = lib.mkAfter ''
+    udevadm settle
+    zpool import -N rpool || true
     zfs rollback -r rpool/root@blank
+    zfs rollback -r rpool/home@blank
   '';
 
   # Persistenz (nur das absolut Nötigste für den Boot)
