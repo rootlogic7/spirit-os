@@ -79,7 +79,8 @@
     wayland.windowManager.hyprland.settings = {
       # Interner Laptop-Monitor
       monitor = lib.mkForce [
-        "eDP-1,preferred,auto,1"
+        "eDP-1,1366x768@60.06,0x0,1"
+        "DP-5,1280x1024@60.02,43x-1024,1"
       ];
       
       # Zwingt Workspaces 1-5 auf den Laptop-Bildschirm
@@ -122,10 +123,11 @@
   # --- Host-spezifische Greeter Konfiguration (Shikigami) ---
   environment.etc."greetd/hyprland.conf".text = lib.mkBefore ''
     # --- Monitor für Laptop ---
-    monitor=,preferred,auto,1
+    monitor=eDP-1,1366x768,0x0,1
+    monitor=DP-5,1280x1024,0x-1024,1
     
     # --- Cursor in die Ecke teleportieren ---
-    exec-once = ${pkgs.hyprland}/bin/hyprctl dispatch movecursor 9999 9999
+    exec-once = ${pkgs.hyprland}/bin/hyprctl dispatch movecursor 1365 767
   '';
 
   system.stateVersion = "24.11"; 
