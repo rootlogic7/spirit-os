@@ -120,14 +120,9 @@
   };
 
   # --- Display Manager (Greetd + Tuigreet) ---
-  services.greetd = {
+  services.sysc-greet = {
     enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-user-session --cmd start-hyprland";
-        user = "greeter";
-      };
-    };
+    compositor = "hyprland";
   };
 
   system.stateVersion = "24.11"; 
