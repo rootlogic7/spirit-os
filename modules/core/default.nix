@@ -33,6 +33,16 @@
     pciutils
     fastfetch
     sops
+    # Der Wrapper MUSS großgeschrieben sein, um sysc-greet abzufangen!
+    (writeShellScriptBin "Hyprland" ''
+      # Loop-Schutz: Falls start-hyprland intern wieder "Hyprland" aufruft
+      if [ "$HYPRLAND_WRAPPER_ACTIVE" = "1" ]; then
+        exec ${pkgs.hyprland}/bin/Hyprland "$@"
+      else
+        export HYPRLAND_WRAPPER_ACTIVE=1
+        exec start-hyprland "$@"
+      fi
+    '')
   ];
 
   # --- Editor ---
@@ -62,4 +72,5 @@
       PasswordAuthentication = false;
     };
   };
+
 }

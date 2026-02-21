@@ -15,11 +15,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  boot.kernelParams = [ "quiet" "splash" ];
+  boot.kernelParams = [ "quiet" "splash" "console=tty1" "video=DP-1:3440x1440@100" "video=HDMI-A-1:1920x1080@100" ];
 
   # --- Initrd Network & SSH Unlock ---
   boot.initrd = {
-    kernelModules = [ "r8169" ];
+    kernelModules = [ "r8169" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     network = {
       enable = true;
       ssh = {
@@ -102,39 +102,6 @@
     secrets."haku-password".neededForUsers = true;
   };
 
-  # --- Display Manager (SDDM) ---
-  services.xserver.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    # Theme Paket
-    (catppuccin-sddm.override {
-      flavor = "mocha";
-      accent = "mauve";
-      font  = "JetBrainsMono Nerd Font";
-      loginBackground = true;
-    })
-    # QT Dependencies für Themes
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.qt5.qtquickcontrols2
-    libsForQt5.qt5.qtsvg
-  ];
-
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = false;
-    theme = "catppuccin-mocha-mauve";
-  };
-
-  # --- X11 Setup Script (FIXED) ---
-  # Wird ausgeführt, bevor SDDM startet.
-  services.xserver.displayManager.setupCommands = ''
-    # HDMI Monitore ausschalten
-    ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-0 --off
-    ${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-A-1 --off
-
-    # Hauptmonitor (DP-0) konfigurieren
-    ${pkgs.xorg.xrandr}/bin/xrandr --output DP-0 --mode 3440x1440 --rate 100 --primary
-  '';
   # Hyprland aktivieren
   programs.hyprland = {
     enable = true;
@@ -168,7 +135,7 @@
         "HDMI-A-1,1920x1080@100,3440x0,auto"
       ];
       
-      workspace = [
+      workspace = lib.mkForce [
         "1, monitor:DP-1, default:true"
         "2, monitor:DP-1"
         "3, monitor:DP-1"
@@ -182,10 +149,59 @@
       ];
 
       input = {
-        accel_profile = "flat";
+          accel_profile = lib.mkForce "flat";
       };
     };
   };
+
+  # 1. Wir aktivieren sysc-greet, damit das System das Paket und die Configs baut
+  services.sysc-greet = {
+    enable = true;
+    compositor = "hyprland"; 
+  };
+
+  # 2. HIJACK: Wir überschreiben den TTY-Startbefehl von sysc-greet mit Gewalt!
+  # Statt im fehlerhaften TTY zu starten, zünden wir unsere minimale Hyprland-Sitzung.
+  services.greetd.settings.default_session = pkgs.lib.mkForce {
+    command = "start-hyprland";
+    user = "greeter";
+  };
+
+  # 3. Die Konfiguration für das "Greeter-Hyprland" (Nur für Kohaku!)
+  environment.etc."greetd/hyprland.conf".text = ''
+    # --- Nvidia Environment Variables ---
+    env = LIBVA_DRIVER_NAME,nvidia
+    env = XDG_SESSION_TYPE,wayland
+    env = GBM_BACKEND,nvidia-drm
+    env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+    env = NIXOS_OZONE_WL,1
+    
+    # --- Monitore ---
+    monitor=DP-1,3440x1440@100,0x0,1
+    monitor=HDMI-A-1,1920x1080@100,3440x0,1
+
+    workspace = 1, monitor:DP-1, default:true
+
+    misc {
+      disable_splash_rendering = true
+      disable_hyprland_logo = true
+      background_color = 0x000000
+    }
+    animations {
+      enabled = false
+    }
+    
+    # --- Autostart: Kitty öffnet sich und startet sysc-greet! ---
+    exec-once = [workspace 1 silent; fullscreen] ${pkgs.kitty}/bin/kitty -e sysc-greet
+  '';
+
+  # 4. DEIN TRICK: Wir verlinken die Config ins Home-Verzeichnis des Greeter-Users!
+  # systemd führt das aus, kurz bevor der Greeter startet.
+  systemd.services.greetd.preStart = ''
+    mkdir -p /var/lib/greeter/.config/hypr
+    ln -sf /etc/greetd/hyprland.conf /var/lib/greeter/.config/hypr/hyprland.conf
+    chown -R greeter:greeter /var/lib/greeter
+  '';
 
   system.stateVersion = "24.11"; 
 }

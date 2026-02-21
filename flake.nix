@@ -24,6 +24,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sysc-greet = {
+      url = "github:Nomadcxx/sysc-greet";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
@@ -34,10 +38,14 @@
         ./hosts/kohaku/default.nix
         ./modules/core/default.nix
         ./hosts/kohaku/disko.nix
+
         inputs.disko.nixosModules.disko
-        inputs.chaotic.nixosModules.default
-        inputs.sops-nix.nixosModules.sops
         inputs.impermanence.nixosModules.impermanence
+        inputs.sops-nix.nixosModules.sops
+        inputs.sysc-greet.nixosModules.default
+
+        inputs.chaotic.nixosModules.default
+
         inputs.home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -53,16 +61,18 @@
       modules = [
         ./hosts/shikigami/default.nix
         ./modules/core/default.nix
-        # Nur das absolute Minimum an Modulen!
+        ./hosts/shikigami/disko.nix
+
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
+        inputs.sysc-greet.nixosModules.default
+
         inputs.home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
           home-manager.extraSpecialArgs = { inherit inputs; };
-          # Wir nutzen vorerst dieselbe home.nix wie auf kohaku!
           home-manager.users.haku = import ./users/haku/home.nix;
         }
       ];

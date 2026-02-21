@@ -10,6 +10,21 @@ with lib; {
       description = "Das globale Hintergrundbild"; 
     };
 
+    # --- Fonts and Fontsize ---
+    fonts = {
+      main = mkOption {
+        type = types.str;
+        default = "JetBrainsMono Nerd Font";
+        description = "Die primäre Schriftart für UI, Bars und Terminals";
+      };
+      
+      size = mkOption {
+        type = types.int;
+        default = 12;
+        description = "Die Basis-Schriftgröße für das Terminal";
+      };
+    };
+
     colors = {
       # --- Base Colors ---
       base     = mkOption { type = types.str; default = "1e1e2e"; description = "Dunkelster Hintergrund (z.B. Terminals)"; };

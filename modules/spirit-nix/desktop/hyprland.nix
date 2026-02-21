@@ -39,6 +39,7 @@
       # --- Input (Defaults) ---
       input = {
         kb_layout = "de";
+        kb_variant = "nodeadkeys";
         follow_mouse = 1;
         # Laptops wollen meistens natural_scroll, Desktops eher nicht.
         # Wir setzen false als Default, können es aber im Laptop überschreiben.
@@ -58,12 +59,20 @@
         border_size = 2;
         layout = "dwindle";
         allow_tearing = true;
-        
-        # Hier nutzen wir jetzt unsere eigenen Theme-Variablen!
-        # Ein Gradient aus Accent (Mauve) und Blue
-        "col.active_border" = "rgb(${config.spirit.theme.colors.accent}) rgb(${config.spirit.theme.colors.blue}) 45deg";
-        # Inaktiver Rahmen aus Surface1
+        "col.active_border" = "rgb(${config.spirit.theme.colors.accent})";
         "col.inactive_border" = "rgb(${config.spirit.theme.colors.surface1})";
+      };
+      # --- Gruppen (Tabbed Windows) ---
+      group = {
+        "col.border_active" = "rgb(${config.spirit.theme.colors.accent})";
+        "col.border_inactive" = "rgb(${config.spirit.theme.colors.surface1})";
+        groupbar = {
+          font_family = "${config.spirit.theme.fonts.main}";
+          font_size = 10;
+          text_color = "rgb(${config.spirit.theme.colors.text})";
+          "col.active" = "rgb(${config.spirit.theme.colors.surface2})";
+          "col.inactive" = "rgb(${config.spirit.theme.colors.surface0})";
+        };
       };
 
       decoration = {
@@ -71,26 +80,36 @@
         blur = {
           enabled = true;
           size = 4;
-          passes = 2;
+          passes = 3;
           new_optimizations = true;
           ignore_opacity = true;
+          popups = true;
         };
         shadow = {
           enabled = true;
-          range = 4;
+          range = 15;
           render_power = 3;
+          color = "rgba(${config.spirit.theme.colors.crust}cc)";
         };
+      };
+
+      misc = {
+        force_default_wallpaper = 0;
+        disable_splash_rendering = true;
       };
 
       animations = {
         enabled = true;
-        bezier = [ "myBezier, 0.05, 0.9, 0.1, 1.05" ];
+        bezier = [ 
+          "fluent, 0.25, 1, 0.5, 1"
+          "bounce, 0.4, 0.9, 0.2, 1.1"
+        ];
         animation = [
-          "windows, 1, 5, myBezier"
-          "windowsOut, 1, 5, default, popin 80%"
-          "border, 1, 10, default"
-          "fade, 1, 5, default"
-          "workspaces, 1, 5, default, slide"
+          "windows, 1, 4, bounce, popin 80%"
+          "windowsOut, 1, 4, fluent, popin 80%"
+          "border, 1, 10, fluent"
+          "fade, 1, 4, fluent"
+          "workspaces, 1, 5, fluent, slide"
         ];
       };
 

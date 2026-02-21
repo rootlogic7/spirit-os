@@ -119,5 +119,16 @@
     pulse.enable = true;
   };
 
+  # --- Display Manager (Greetd + Tuigreet) ---
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-user-session --cmd start-hyprland";
+        user = "greeter";
+      };
+    };
+  };
+
   system.stateVersion = "24.11"; 
 }
