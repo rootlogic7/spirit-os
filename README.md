@@ -8,15 +8,15 @@ Spirit-OS is designed to be hardware-agnostic at its core, allowing seamless dep
 * **Flakes & Home-Manager:** Centralized dotfile and package management.
 * **Impermanence (Erase Your Darlings):** Root file systems are mounted on ZFS-snapshots and wiped on every boot. Only strictly defined state is kept in `/persist`.
 * **SOPS-Nix:** Age-encrypted secret management for passwords and API keys.
-* **Spirit-Theme Engine:** A custom Nix module defining global hex codes and variables (based on Catppuccin), injecting them into all apps (Hyprland, Ghostty, Waybar, etc.).
+* **Spirit-Theme Engine:** A custom Nix module defining global hex codes and variables, injecting them into all apps.
 
 ## 💻 Hosts
 
 * **`kohaku`** (Desktop)
   * High-performance Wayland environment (Hyprland).
   * Dual-monitor setup with gaming-optimized input overrides.
-  * ZFS layout with dedicated gaming pools.
-  * Uses the `chaotic-nyx` CachyOS kernel for lower latency.
+  * ZFS layout with dedicated gaming pools and impermanence setup for maximum privacy.
+  * Uses the `zen` Kernel
 * **`shikigami`** (Laptop - Thinkpad)
   * Lightweight, portable Wayland environment.
   * Intel integrated graphics, touchpad gestures, and single-display layout.
@@ -26,7 +26,7 @@ Spirit-OS is designed to be hardware-agnostic at its core, allowing seamless dep
 * **WM:** Hyprland
 * **Terminal:** Ghostty
 * **Shell:** Zsh / Fastfetch
-* **Bar/Shell:** Quickshell / Waybar
+* **Bar/Shell:** Quickshell
 * **File Manager:** Yazi
 
 ## 🚀 Installation (New Host)
