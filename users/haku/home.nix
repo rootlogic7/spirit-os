@@ -53,5 +53,15 @@
     };
   };
 
+  programs.firefox = {
+    enable = true;
+    profiles.haku = {
+      isDefault = true;
+      id = 0;
+      # Dies sorgt dafür, dass Firefox immer exakt dieses Profil nutzt
+      # und die Add-ons sowie Einstellungen darin behält.
+    };
+  };
+
   home.stateVersion = "24.11";
 }
