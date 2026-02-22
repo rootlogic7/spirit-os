@@ -25,16 +25,18 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 2. Öffne ein Terminal und werde zu Root:
 
     ´´´bash
+   
     sudo -i
+   
     ´´´
 
-3. Lege das LUKS-Passwort für die Festplattenverschlüsselung temporär im RAM ab:
+4. Lege das LUKS-Passwort für die Festplattenverschlüsselung temporär im RAM ab:
 
     '''
     echo -n "DEIN_FESTPLATTEN_PASSWORT" > /tmp/secret.key
     '''
 
-4. Klone das Spirit-OS Repository in den flüchtigen Arbeitsspeicher:
+5. Klone das Spirit-OS Repository in den flüchtigen Arbeitsspeicher:
 
     '''
     git clone [https://github.com/DEIN_GITHUB_NAME/spirit-os.git](https://github.com/DEIN_GITHUB_NAME/spirit-os.git) /tmp/spirit-os
