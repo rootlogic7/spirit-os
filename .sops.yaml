@@ -1,6 +1,6 @@
 keys:
   - &kohaku age1mltkkdvcgxqhmcwsjf9utshsy9jdn5u3sfhjku7jg3dltscv8ylsu6wsad
-  - &shikigami age1zf98vlevdla3muqcjklmtafa64qrgj6xaewtefrcf00vvyq3dvcqf6sneh
+  - &shikigami age1hhxv99c9y4gy8r8r5adh9nlkpjruhyty975w7h0v58q3c4s0c5fsx2lphp
 creation_rules:
   - path_regex: secrets/secrets.yaml$
     key_groups:
