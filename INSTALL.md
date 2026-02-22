@@ -44,7 +44,7 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 
 ## Phase 2: Partitionierung & ZFS Setup (Disko)
 
-Führe Disko für den spezifischen Host aus (ersetze kohaku ggf. durch deinen Hostnamen).
+Führe Disko für den spezifischen Host aus.
 Dieser Schritt formatiert die definierten Laufwerke, erstellt die ZFS-Pools, legt die initialen blank-Snapshots für Impermanence an und mountet alles unter /mnt.
 
    ```
