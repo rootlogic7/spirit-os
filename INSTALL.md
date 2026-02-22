@@ -4,7 +4,7 @@ Dieser Guide beschreibt den vollständigen Installationsprozess für einen neuen
 
 Das Setup nutzt ZFS Impermanence (Erase Your Darlings), SOPS-Nix für Secrets und Disko für die automatische Partitionierung.
 
-    **⚠️ Achtung**: Disko formatiert die in der disko.nix angegebenen Laufwerke komplett! Nicht aufgeführte Laufwerke (z. B. bestehende ZFS-RAIDs) werden sicher ignoriert und bleiben erhalten.
+    *⚠️ Achtung*: Disko formatiert die in der disko.nix angegebenen Laufwerke komplett! Nicht aufgeführte Laufwerke (z. B. bestehende ZFS-RAIDs) werden sicher ignoriert und bleiben erhalten.
 
 
 ## Phase 0: Vorbereitung (Im laufenden System)
