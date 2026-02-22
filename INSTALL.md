@@ -24,7 +24,7 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 
 2. Öffne ein Terminal und werde zu Root:
 
-    ´´´
+    ´´´bash
     sudo -i
     ´´´
 
