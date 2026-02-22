@@ -37,7 +37,7 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 5. Klone das Spirit-OS Repository in den flüchtigen Arbeitsspeicher:
 
     ```
-    git clone [https://github.com/rootlogic7/spirit-os.git](https://github.com/rootlogic7/spirit-os.git) /tmp/spirit-os
+    git clone https://github.com/rootlogic7/spirit-os.git /tmp/spirit-os
     cd /tmp/spirit-os
     ```
 
