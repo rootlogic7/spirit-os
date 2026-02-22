@@ -40,6 +40,7 @@
 
   # Persistenz (nur das absolut Nötigste für den Boot)
   fileSystems."/persist".neededForBoot = true;
+  fileSystems."/home".neededForBoot = true;
   
   # --- SECRETS (SOPS) ---
   sops = {
