@@ -30,16 +30,16 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 
 4. Lege das LUKS-Passwort für die Festplattenverschlüsselung temporär im RAM ab:
 
-    '''
+    ```
     echo -n "DEIN_FESTPLATTEN_PASSWORT" > /tmp/secret.key
-    '''
+    ```
 
 5. Klone das Spirit-OS Repository in den flüchtigen Arbeitsspeicher:
 
-    '''
+    ```
     git clone [https://github.com/DEIN_GITHUB_NAME/spirit-os.git](https://github.com/DEIN_GITHUB_NAME/spirit-os.git) /tmp/spirit-os
     cd /tmp/spirit-os
-    '''
+    ```
 
 
 ## Phase 2: Partitionierung & ZFS Setup (Disko)
@@ -47,9 +47,9 @@ Bevor der Rechner formatiert wird, müssen die Configs auf den neuesten Stand ge
 Führe Disko für den spezifischen Host aus (ersetze kohaku ggf. durch deinen Hostnamen).
 Dieser Schritt formatiert die definierten Laufwerke, erstellt die ZFS-Pools, legt die initialen blank-Snapshots für Impermanence an und mountet alles unter /mnt.
 
-   '''
+   ```
    nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./hosts/kohaku/disko.nix
-   '''
+   ```
 
 
 ## Phase 3: Host-Identität & SSH-Keys (Automatisiert)
@@ -58,9 +58,9 @@ Das frisch formatierte System benötigt eine persistente machine-id und einen ei
 
 Führe das beiliegende Skript aus:
 
-   '''
+   ```
    ./scripts/install-keys.sh
-   '''
+   ```
 
 **👉 WICHTIG**: Kopiere den am Ende in Grün ausgegebenen age1... String! Das ist die Identität des neuen Systems.
 
@@ -77,17 +77,17 @@ Auf deinem Zweitgerät (z.B. Laptop):
 
 3. Führe das SOPS-Update aus, um die Secrets für den neuen Key zugänglich zu machen:
 
-    '''
+    ```
     sops updatekeys secrets/secrets.yaml
-    '''
+    ```
 
 4. Änderungen committen und pushen:
 
-    '''
+    ```
     git add .
     git commit -m "chore: update host ssh key for fresh install"
     git push
-    '''
+    ```
 
 
 ## Phase 5: Finale System-Installation
@@ -96,24 +96,24 @@ Zurück am Live-USB-Stick des zu installierenden Rechners:
 
 1. Ziehe dir die aktualisierte SOPS-Datei aus dem Repo:
 
-    '''
+    ```
     git pull
-    '''
+    ```
 
 2. Starte die NixOS-Installation. (Wir verbieten absichtlich ein lokales Root-Passwort, da das System über sudo und SOPS gesichert ist!)
 
-    '''
+    ```
     nixos-install --flake .#kohaku --no-root-passwd
-    '''
+    ```
 
 
 ## Phase 6: Reboot & Enjoy
 
 1. Wenn die Installation abgeschlossen ist:
 
-    '''
+    ```
     reboot
-    '''
+    ```
 
 2. Ziehe den USB-Stick ab.
 
