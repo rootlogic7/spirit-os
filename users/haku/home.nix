@@ -16,6 +16,21 @@
     keepassxc
   ];
 
+  # === DIESEN BLOCK HINZUFÜGEN ===
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "github.com" = {
+        host = "github.com";
+        user = "git";
+        identityFile = "/run/secrets/github-ssh-key";
+        identitiesOnly = true;
+      };
+    };
+  };
+  # ===============================
+
   programs.git = {
     enable = true;
     settings = {

@@ -16,7 +16,7 @@
 
   # --- SOPS USER SECRETS ---
   sops.secrets."github-ssh-key" = {
-    path = "/home/haku/.ssh/id_ed25519";
+    # path = "/home/haku/.ssh/id_ed25519";
     owner = "haku";
     mode = "0400";
   };
