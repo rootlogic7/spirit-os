@@ -14,7 +14,7 @@
   # --- Bootloader & Kernel ---
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelParams = [ "quiet" "splash" "console=tty1" "video=DP-1:3440x1440@100" "video=HDMI-A-1:1920x1080@100" ];
 
   # --- Initrd Network & SSH Unlock ---
