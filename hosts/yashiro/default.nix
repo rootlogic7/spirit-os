@@ -2,7 +2,7 @@
 
 {
   # Hardware-Module
-  boot.initrd.availableKernelModules = [ "xhci_pci" "pcie_brcmstb" "bcm_genet" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" ];
 
   # Remote Unlock Setup (ohne hostKeys!)
   boot.initrd.network = {
