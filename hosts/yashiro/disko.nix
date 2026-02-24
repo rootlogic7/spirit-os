@@ -3,7 +3,7 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/mmcblk1"; # Die SD-Karte am Pi
+        device = "/dev/mmcblk0";
         content = {
           type = "gpt";
           partitions = {
