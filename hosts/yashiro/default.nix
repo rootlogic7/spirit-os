@@ -1,8 +1,17 @@
 { config, pkgs, lib, ... }:
 
 {
+# Zwingt den Kernel, weiter auf dem HDMI-Bildschirm zu sprechen!
+  boot.kernelParams = [ "console=tty0" ];
+
   # Hardware-Module
-  boot.initrd.availableKernelModules = [ "xhci_pci" "pcie_brcmstb" "reset-raspberrypi" "vc4" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "pcie_brcmstb"
+    "reset-raspberrypi"
+    "vc4"
+    "bcmgenet"
+  ];
 
   # Remote Unlock Setup (ohne hostKeys!)
   boot.initrd.network = {
