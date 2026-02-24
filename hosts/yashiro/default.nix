@@ -10,7 +10,6 @@
     "pcie_brcmstb"
     "reset-raspberrypi"
     "vc4"
-    "bcmgenet"
   ];
 
   # Remote Unlock Setup (ohne hostKeys!)
