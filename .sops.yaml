@@ -3,7 +3,7 @@ keys:
   - &host_kohaku age1ld46fyencya7va4deayrzqcnefms68xyrxs8mv0est9aqsmakq0sxrvv2h
   - &haku_shikigami age1frzaqnc74j3858z4ja2fj5pxs7dzn9lw2vavey4fuf6jp5skks6q3pqmws
   - &host_shikigami age1hhxv99c9y4gy8r8r5adh9nlkpjruhyty975w7h0v58q3c4s0c5fsx2lphp
-  - &host_yashiro age12gxnj3c6smyu8unzrhaagwajnf4k67nhn9w9v6ucm4n33r3gnfysv98gck
+  - &host_yashiro age18mcufge43n4alld5sq962d2tvdz0s3vj6g6mr2muztv3fn5wl45qh6dxr3
   - &admin age13acj7v3d6hpn70q3j4f67cx0cdtxhzstsjpvyx5gjd6cyr6n23pq3vvd4a
 creation_rules:
   - path_regex: secrets/secrets.yaml$
