@@ -30,6 +30,12 @@
   networking.hostName = "yashiro";
   system.stateVersion = "25.11";
 
+  hardware.enableRedistributableFirmware = true;
+  hardware.deviceTree = {
+    enable = true;
+    filter = "*rpi-4-*.dtb";
+  };
+
   # User Konfiguration
   users.users.haku = {
     isNormalUser = true;
