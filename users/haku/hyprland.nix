@@ -6,7 +6,7 @@
     hyprlock
     hypridle
     hyprpicker
-    swww
+    awww
     grim
     slurp
     cliphist
