@@ -173,11 +173,11 @@
   # --- Host-spezifische Greeter Konfiguration (Kohaku) ---
   environment.etc."greetd/hyprland.conf".text = lib.mkBefore ''
     # --- Nvidia Environment Variables ---
-    env = LIBVA_DRIVER_NAME,nvidia
-    env = XDG_SESSION_TYPE,wayland
-    env = GBM_BACKEND,nvidia-drm
-    env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-    env = NIXOS_OZONE_WL,1
+    # env = LIBVA_DRIVER_NAME,nvidia
+    # env = XDG_SESSION_TYPE,wayland
+    # env = GBM_BACKEND,nvidia-drm
+    # env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+    # env = NIXOS_OZONE_WL,1
     
     # --- Monitore: Physische Aufstellung ---
     monitor=DP-1,3440x1440@100,0x0,1
