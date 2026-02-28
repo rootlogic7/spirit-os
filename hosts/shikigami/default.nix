@@ -50,7 +50,13 @@
     # === Initrd ===
     initrd = {
       verbose = false;
-      availableKernelModules = [ "nvme" "aesni_intel" "cryptd" ];
+      availableKernelModules = [
+        "nvme" 
+        "aesni_intel" 
+        "cryptd" 
+      ];
+      
+      # === systemd ===
       systemd = {
         enable = true;
         services = {
@@ -88,19 +94,41 @@
 
 
   # === === === === === === === === === 
-  # === --- --- --- Next -- --- --- ===
+  # === --- --- - Services  --- --- ===
   # === === === === === === === === === 
-  # --- Storage & LUKS ---
-  services.zfs.trim.enable = true;
+  services = {
 
-  # === ERASE YOUR DARLINGS (EYD) MAGIE ===
-  # ZFS Rollback bei jedem Boot
+    # === zfs ===
+    zfs = {
+      trim = {
+        enable = true;
+      };
+    };
 
-  # Persistenz (nur das absolut Nötigste für den Boot)
-  fileSystems."/persist".neededForBoot = true;
-  fileSystems."/home".neededForBoot = true;
+    # === pipewire ===
+    pipewire = {
+      enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      pulse = {
+        enable = true;
+      };
+    };
+  };
+
+  # === === === === === === === === === 
+  # === --- --- FileSystems --- --- ===
+  # === === === === === === === === === 
+  fileSystems = {
+    "/persist".neededForBoot = true;
+    "/home".neededForBoot = true;
+  };
   
-  # --- SECRETS (SOPS) ---
+  # === === === === === === === === === 
+  # === --- --- --- sops -- --- --- ===
+  # === === === === === === === === === 
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
@@ -108,12 +136,37 @@
     secrets."haku-password".neededForUsers = true;
   };
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
-  
-  # --- Grafik & Desktop
+  # === === === === === === === === === 
+  # === --- --- Environment --- --- ===
+  # === === === === === === === === === 
+  environment = {
+    pathsToLink = [
+      "/share/xdg-desktop-portal"
+      "/share/applications"
+    ];
+    etc = { 
+      "greetd/hyprland.conf" = {
+        text = lib.mkBefore ''
+          # --- Monitor für Laptop ---
+          monitor=eDP-1,1366x768,0x0,1
+          monitor=DP-5,1280x1024,0x-1024,1
+    
+          # --- Cursor in die Ecke teleportieren ---
+          exec-once = ${pkgs.hyprland}/bin/hyprctl dispatch movecursor 1365 767
+        '';
+      };
+    };
+  };
+
+  # === === === === === === === === === 
+  # === --- --- Desktop --- --- --- ===
+  # === === === === === === === === === 
   hardware.graphics.enable = true;
-  programs.hyprland.enable = true;  
-  # --- Home-Manager Host-Overrides für Shikigami ---
+  programs.hyprland.enable = true;
+
+  # === === === === === === === === === 
+  # === --- --- Home Manager -- --- ===
+  # === === === === === === === === === 
   home-manager.users.haku = { lib, pkgs, ... }: {
     
     home.packages = with pkgs; [
@@ -155,24 +208,6 @@
     };
   };
   
-  # --- Audio (PipeWire) ---
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
   
-  # --- Host-spezifische Greeter Konfiguration (Shikigami) ---
-  environment.etc."greetd/hyprland.conf".text = lib.mkBefore ''
-    # --- Monitor für Laptop ---
-    monitor=eDP-1,1366x768,0x0,1
-    monitor=DP-5,1280x1024,0x-1024,1
-    
-    # --- Cursor in die Ecke teleportieren ---
-    exec-once = ${pkgs.hyprland}/bin/hyprctl dispatch movecursor 1365 767
-  '';
-
   system.stateVersion = "25.11"; 
 }
